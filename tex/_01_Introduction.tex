@@ -3,3 +3,84 @@
 
 \section{Introduction}
 \label{sec:introduction}
+
+Transport layer of ISO/OSI model contains two most significant protocols in terms of
+Internet communication -- TCP and UDP~.
+
+TCP is a connection based protocol which handles congestion control, sends confirmations
+when message is received or cannot be received and guarantees proper order of sending
+packets.
+Because TCP is a point to point protocol we are not allowed to realize multicast
+transmission using it.
+The biggest drawback of this protocol is its heaviness.
+Connection setup requires so called three way handshake which takes some time.
+Lack of any built-in security mechanisms forces us to use dedicated to this purpose
+TLS protocol which introduces its own connection handshake.
+This causes that connection setup becomes even less efficient.
+On the other hand there is a very lightweight, connectionless protocol called UDP~.
+It does not guarantee proper order of sending packets.
+There are not also any confirmations or warnings sent in case of communication errors.
+Everything is performance oriented.
+UDP provides also multicast mechanism.
+According to this UDP is a good choice when we need very fast and lightweight
+communication but we can lose some packets.
+A good example of UDP destination is a video streaming.
+
+We can see that these two protocols and their destinations are strongly opposite.
+And here comes QUIC -- new transport layer protocol based on UDP which is intended
+to replace TCP providing higher performance and even better reliability.
+First of all QUIC is user level protocol not system level one.
+It means that we can implement it without modifying operating systems kernels.
+Secondly QUIC is a secure protocol.
+It ensure data encryption and authentication which are handled by some other
+protocols like TLS~.
+QUIC provides support for these protocols.
+Figure~\ref{fig:http-req-comparison} presents comparison between HTTP request
+made in TCP and QUIC protocols.
+Typical QUIC handshake takes a single round-trip between hosts when TCP one requires
+two round-trips.
+
+\begin{figure}
+    \centering
+    \begin{subfigure}{.5\textwidth}
+        \begin{sequencediagram}
+            \newinst{client}{Client}
+            \newinst[3]{server}{Server}
+            \mess{client}{TCP SYN}{server}
+            \mess{server}{TCP SYN + ACK}{client}
+            \mess{client}{TCP ACK}{server}
+            \postlevel
+            \mess{client}{TLS ClientHello}{server}
+            \mess{server}{TLS ServerHello}{client}
+            \mess{client}{TLS Finished}{server}
+            \postlevel
+            \mess{client}{HTTP REQ}{server}
+            \mess{server}{HTTP RES}{client}
+        \end{sequencediagram}
+        \caption{HTTP request in TCP}
+        \label{http-req-tcp}
+    \end{subfigure}%
+    \begin{subfigure}{.5\textwidth}
+        \begin{sequencediagram}
+            \newinst{client}{Client}
+            \newinst[3]{server}{Server}
+            \mess{client}{QUIC}{server}
+            \mess{server}{QUIC}{client}
+            \mess{client}{QUIC}{server}
+            \postlevel
+            \mess{client}{HTTP REQ}{server}
+            \mess{server}{HTTP RES}{client}
+        \end{sequencediagram}
+        \caption{HTTP request in QUIC}
+        \label{http-req-quic}
+    \end{subfigure}
+    \caption{HTTP request comparison}
+    \label{fig:http-req-comparison}
+\end{figure}
+
+Another enhancement in QUIC is resistance for network changes.
+User can change its Wi-Fi network without performing a new client-server handshake.
+This is achieved by special ID's QUIC associates with each connection.
+
+Results section describes performance differences between communication in TCP and QUIC
+protocols including connection time setup and reliability.
