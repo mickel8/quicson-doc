@@ -3,3 +3,16 @@
 
 \section{Abstract}
 \label{sec:abstract}
+
+The goal of this thesis is to examine usefulness of QUIC transport protocol
+in an interactive communication.
+QUIC is a new transport protocol based on UDP protocol.
+With it there comes new HTTP version - HTTP/3.
+Both QUIC and HTTP/3 are not standardize yet but there exists some implementations
+of IETF draft versions which are successfully used in the production.
+Therefore it is a good moment to examine if QUIC suits well
+and gains new advantages in an interactive communication
+in which neither TCP nor UDP protocols perform well enough.
+In this purposes Rust implementation of QUIC has been chosen.
+Results include comparision between TCP and QUIC protocols in terms
+of performance e.g.~connection setup time and reliability.
