@@ -1,0 +1,14 @@
+\begin{tikzpicture}
+    \begin{axis}[
+%        bar width=1cm,
+        enlarge x limits=1,
+        ybar,
+        xtick=data,
+        xticklabels from table={data/packets.dat}{proto},
+        legend pos = outer north east]
+        \addplot table[mark=*, x expr=\coordindex, y index=3] {data/packets.dat};
+        \addplot table[mark=*, x expr=\coordindex, y index=2] {data/packets.dat};
+        \addplot table[mark=*, x expr=\coordindex, y index=1] {data/packets.dat};
+        \legend{conn-est-packets, all-packets, all-packets-kbytes}
+    \end{axis}
+\end{tikzpicture}
