@@ -1,0 +1,10 @@
+\begin{tikzpicture}
+    \begin{axis}[
+        xlabel=Request No.,
+        ylabel=Time (s),
+        legend pos = outer north east]
+        \addplot table[mark=*, x index=0, y index=1] {data/conn-est-time.dat};
+        \addplot table[mark=*, x index=0, y index=2] {data/conn-est-time.dat};
+        \legend{tcp, quic}
+    \end{axis}
+\end{tikzpicture}

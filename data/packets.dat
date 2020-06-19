@@ -1,0 +1,3 @@
+proto   kbytes           packets conn_est_packets
+tcp     6.140            18      11
+quic    8.553            19      7
